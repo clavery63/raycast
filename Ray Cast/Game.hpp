@@ -24,7 +24,7 @@ private:
     void drawPlayerStats();
     void drawWalls();
     
-    uint8_t slivers[800][7200];
+    uint8_t slivers[224][896];
     
 private:
     static const sf::Time TimePerFrame;

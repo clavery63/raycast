@@ -19,7 +19,7 @@ int level[10][10] = {
 };
 
 Game::Game()
-: mWindow(sf::VideoMode::getFullscreenModes()[0], "Ray Cast", sf::Style::Fullscreen)
+: mWindow(sf::VideoMode(1024, 576, sf::VideoMode::getDesktopMode().bitsPerPixel), "Ray Cast")
 , player(new Player())
 {
     sf::Image icon;
@@ -157,8 +157,8 @@ void Game::drawWalls() {
     for (int i = 0; i < numRects; i++) {
         double currentX = player->getX();
         double currentY = player->getY();
-        double deltaX = sin(player->getRotation() + ((float) i - numRects / 2) / 800);
-        double deltaY = cos(player->getRotation() + ((float) i - numRects / 2) / 800);
+        double deltaX = sin(player->getRotation() + ((float) i - numRects / 2) / 224);
+        double deltaY = cos(player->getRotation() + ((float) i - numRects / 2) / 224);
         int arrayX = (int) currentX / 100;
         int arrayY = (int) currentY / 100;
         
@@ -178,9 +178,9 @@ void Game::drawWalls() {
         int sliverIndex = 0;
         
         if ((int) (currentX + 1) % 100 < 2)
-            sliverIndex = ((int) currentY % 100) * (800 / 100);
+            sliverIndex = ((int) currentY % 100) * (224 / 100);
         else if ((int) (currentY + 1) % 100 < 2)
-            sliverIndex = ((int) currentX % 100) * (800 / 100);
+            sliverIndex = ((int) currentX % 100) * (224 / 100);
         else {}
         
         
@@ -189,7 +189,7 @@ void Game::drawWalls() {
         texture.update(slivers[sliverIndex]);
         
         sf::RectangleShape rect(sf::Vector2f(rectWidth, rectHeight));
-        rect.setPosition(i * rectWidth, 800 - rectHeight / 2);
+        rect.setPosition(i * rectWidth, 400 - rectHeight / 2);
         rect.setTexture(&texture);
         mWindow.draw(rect);
     }
@@ -197,19 +197,17 @@ void Game::drawWalls() {
 
 void Game::prepareImage() {
     sf::Vector2u size = image.getSize();
+    std::cout << size.x;
     int height = size.y;
-    int width = 1;
     
-    for (int i = 0; i < size.x / width; i++)
+    for (int i = 0; i < size.x; i++)
     {
         for (int j = 0; j < height; j++)
         {
-            for (int ii = 0; ii < width; ii++) {
-                slivers[i][4 * (width * j + ii)] = image.getPixel(i * width, j).r;
-                slivers[i][4 * (width * j + ii) + 1] = image.getPixel(i * width, j).g;
-                slivers[i][4 * (width * j + ii) + 2] = image.getPixel(i * width, j).b;
-                slivers[i][4 * (width * j + ii) + 3] = image.getPixel(i * width, j).a;
-            }
+            slivers[i][4 * j] = image.getPixel(i, j).r;
+            slivers[i][4 * j + 1] = image.getPixel(i, j).g;
+            slivers[i][4 * j + 2] = image.getPixel(i, j).b;
+            slivers[i][4 * j + 3] = image.getPixel(i, j).a;
         }
     }
 }
