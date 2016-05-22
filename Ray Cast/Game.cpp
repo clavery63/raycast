@@ -38,7 +38,7 @@ Game::Game()
     }
     mWindow.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     
-    if (!image.loadFromFile(resourcePath() + "cute_image.jpg")) {
+    if (!image.loadFromFile(resourcePath() + "wall_image.jpg")) {
         return EXIT_FAILURE;
     }
     
@@ -188,14 +188,14 @@ void Game::drawWalls() {
         int sliverIndex = 0;
         
         if ((int) (currentX + 1) % 100 < 2)
-            sliverIndex = ((int) currentY % 100) * (800 / 100);
+            sliverIndex = ((int) currentY % 100) * (224 / 100);
         else if ((int) (currentY + 1) % 100 < 2)
-            sliverIndex = ((int) currentX % 100) * (800 / 100);
+            sliverIndex = ((int) currentX % 100) * (224 / 100);
         else {}
         
         
         sf::Texture texture;
-        texture.create(1, 600);
+        texture.create(1, 224);
         texture.update(slivers[sliverIndex]);
         
         sf::RectangleShape rect(sf::Vector2f(rectWidth, rectHeight));
