@@ -5,7 +5,7 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f/60.f);
 
-int level[10][10] = {
+int level[20][10] = {
     {1,1,1,1,1,1,1,1,1,1},
     {1,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,0,0,1},
@@ -14,6 +14,16 @@ int level[10][10] = {
     {1,0,1,0,0,0,1,0,0,1},
     {1,0,1,0,0,0,1,0,0,1},
     {1,0,1,1,1,1,1,1,0,1},
+    {1,0,0,0,0,0,0,0,0,1},
+    {1,1,0,1,1,1,1,1,1,1},
+    {1,1,0,1,1,1,1,1,1,1},
+    {1,0,0,0,0,0,0,0,0,1},
+    {1,1,1,1,1,1,1,0,0,1},
+    {1,0,0,0,0,0,1,0,0,1},
+    {1,0,0,0,0,0,1,0,0,1},
+    {1,0,0,0,0,0,1,0,0,1},
+    {1,0,0,0,0,0,1,0,0,1},
+    {1,0,0,0,0,0,0,1,0,1},
     {1,0,0,0,0,0,0,0,0,1},
     {1,1,1,1,1,1,1,1,1,1}
 };
@@ -189,7 +199,7 @@ void Game::drawWalls() {
         texture.update(slivers[sliverIndex]);
         
         sf::RectangleShape rect(sf::Vector2f(rectWidth, rectHeight));
-        rect.setPosition(i * rectWidth, 800 - rectHeight / 2);
+        rect.setPosition(i * rectWidth, 1000 - rectHeight / 2);
         rect.setTexture(&texture);
         mWindow.draw(rect);
     }
