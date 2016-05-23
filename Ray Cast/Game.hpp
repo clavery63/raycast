@@ -15,16 +15,17 @@ public:
 private:
     void processEvents();
     void update();
-    void render();
+    void render(float frames);
     void handleKeyboard();
     void handleCollisions();
     void handleInput(sf::Keyboard::Key key);
     void prepareImage();
     void drawImage();
-    void drawPlayerStats();
+    void drawFramesPerSec(float frames);
     void drawWalls();
     
     uint8_t slivers[224][2688];
+    std::vector<sf::Texture> textures;
     
 private:
     static const sf::Time TimePerFrame;

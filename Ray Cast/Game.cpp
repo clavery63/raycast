@@ -52,6 +52,7 @@ void Game::run()
 {
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    int frames = 0;
     while (mWindow.isOpen())
     {
         sf::Time elapsedTime = clock.restart();
@@ -63,7 +64,8 @@ void Game::run()
             processEvents();
             update();
         }
-        render();
+        float rate = 1.0 / elapsedTime.asSeconds();
+        render(rate);
     }
 }
 
@@ -89,12 +91,11 @@ void Game::update()
     handleCollisions();
 }
 
-void Game::render()
+void Game::render(float frames)
 {
     mWindow.clear(sf::Color(0, 0, 0, 255));
     drawWalls();
-    drawPlayerStats();
-//    drawImage();
+    drawFramesPerSec(frames);
     mWindow.display();
 }
 
@@ -137,25 +138,17 @@ void Game::handleCollisions() {
     }
 }
 
-void Game::drawPlayerStats() {
+void Game::drawFramesPerSec(float frames) {
     sf::Font font;
     font.loadFromFile(resourcePath() + "sansation.ttf");
     
-    sf::Text text("Player Stats:", font);
+    sf::Text text("STATS", font);
     text.setCharacterSize(30);
     text.setColor(sf::Color::White);
     mWindow.draw(text);
     
-    text.setString("player x: " + std::to_string(player->getX()));
+    text.setString("frames/sec: " + std::to_string(frames));
     text.setPosition(0, 40);
-    mWindow.draw(text);
-    
-    text.setString("player y: " + std::to_string(player->getY()));
-    text.setPosition(0, 80);
-    mWindow.draw(text);
-    
-    text.setString("player rotation: " + std::to_string(player->getRotation()));
-    text.setPosition(0, 120);
     mWindow.draw(text);
 }
 
@@ -192,15 +185,10 @@ void Game::drawWalls() {
         else if ((int) (currentY + 1) % 100 < 2)
             sliverIndex = ((int) currentX % 100) * (224 / 100);
         else {}
-        
-        
-        sf::Texture texture;
-        texture.create(1, 224);
-        texture.update(slivers[sliverIndex]);
-        
+
         sf::RectangleShape rect(sf::Vector2f(rectWidth, rectHeight));
         rect.setPosition(i * rectWidth, 1000 - rectHeight / 2);
-        rect.setTexture(&texture);
+        rect.setTexture(&textures[sliverIndex]);
         mWindow.draw(rect);
     }
 }
@@ -221,6 +209,14 @@ void Game::prepareImage() {
                 slivers[i][4 * (width * j + ii) + 3] = image.getPixel(i * width, j).a;
             }
         }
+    }
+
+    for (int i = 0; i < size.x / width; i++)
+    {
+        sf::Texture texture;
+        texture.create(1, 224);
+        texture.update(slivers[i]);
+        textures.push_back(texture);
     }
 }
 
