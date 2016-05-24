@@ -29,9 +29,11 @@ int level[20][10] = {
 };
 
 Game::Game()
-: mWindow(sf::VideoMode::getFullscreenModes()[0], "Ray Cast", sf::Style::Fullscreen)
+: mWindow()
 , player(new Player())
 {
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    mWindow.create(sf::VideoMode(1024, 768, desktop.bitsPerPixel), "SFML window", sf::Style::Close);
     sf::Image icon;
     if (!icon.loadFromFile(resourcePath() + "icon.png")) {
         return EXIT_FAILURE;
@@ -142,9 +144,13 @@ void Game::drawFramesPerSec(float frames) {
     sf::Font font;
     font.loadFromFile(resourcePath() + "sansation.ttf");
     
+    sf::Color color = sf::Color::White;
+
+    if (frames < 30) { color = sf::Color::Red; }
+
     sf::Text text("STATS", font);
     text.setCharacterSize(30);
-    text.setColor(sf::Color::White);
+    text.setColor(color);
     mWindow.draw(text);
     
     text.setString("frames/sec: " + std::to_string(frames));
@@ -160,8 +166,8 @@ void Game::drawWalls() {
     for (int i = 0; i < numRects; i++) {
         double currentX = player->getX();
         double currentY = player->getY();
-        double deltaX = sin(player->getRotation() + ((float) i - numRects / 2) / 800);
-        double deltaY = cos(player->getRotation() + ((float) i - numRects / 2) / 800);
+        double deltaX = sin(player->getRotation() + ((float) i - numRects / 2) / 1200);
+        double deltaY = cos(player->getRotation() + ((float) i - numRects / 2) / 1200);
         int arrayX = (int) currentX / 100;
         int arrayY = (int) currentY / 100;
         
@@ -176,7 +182,7 @@ void Game::drawWalls() {
             arrayY = (int) currentY / 100;
         }
         
-        double rectHeight = 400000 / dist;
+        double rectHeight = mWindow.getSize().y * 350 / dist;
         
         int sliverIndex = 0;
         
@@ -187,7 +193,7 @@ void Game::drawWalls() {
         else {}
 
         sf::RectangleShape rect(sf::Vector2f(rectWidth, rectHeight));
-        rect.setPosition(i * rectWidth, 1000 - rectHeight / 2);
+        rect.setPosition(i * rectWidth, (mWindow.getSize().y - rectHeight) / 2);
         rect.setTexture(&textures[sliverIndex]);
         mWindow.draw(rect);
     }

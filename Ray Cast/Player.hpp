@@ -40,8 +40,8 @@ private:
     double rotation;
     
     constexpr static const double TWO_PI = 2 * 3.14159;
-    constexpr static const double PLAYER_SPEED = 7.0;
-    constexpr static const double ROTATION_SPEED = 0.05;
+    constexpr static const double PLAYER_SPEED = 14.0;
+    constexpr static const double ROTATION_SPEED = 0.04;
     
     double collisionResult(double pos);
 };
